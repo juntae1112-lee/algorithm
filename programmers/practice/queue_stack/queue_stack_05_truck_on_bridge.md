@@ -15,7 +15,30 @@
 
 모든 트럭이 다리를 완전히 건너는 데 걸리는 최소 시간을 구해야 한다.
 
-## First Confusing Point
+## Quick Summary
+
+- `bridge_length`는 다리에 동시에 올라갈 수 있는 트럭 수이면서, 트럭이 다리를 통과하는 데 걸리는 시간처럼 동작한다.
+- 다리의 모든 칸을 매초 이동시키면 `bridge_length`가 클 때 시간초과가 난다.
+- 효율적으로 풀려면 트럭이 다리에 들어갈 때 `(트럭 무게, 빠져나갈 시간)`을 저장한다.
+- 매초 queue의 front가 빠져나갈 시간인지 확인하고, 현재 다리 무게를 갱신한다.
+
+## My Approach
+
+대기 트럭은 `waiting` queue에 저장한다.
+
+다리 위 트럭은 `passing` queue에 저장하되, 단순히 무게만 저장하지 않고 `(트럭 무게, 빠져나갈 시간)`을 함께 저장한다.
+
+현재 다리 위 총 무게는 `passing_weights`로 따로 관리한다.
+
+매초 다음 순서로 처리한다.
+
+- 다리에서 빠져나갈 시간이 된 트럭이 있으면 제거한다.
+- 다음 대기 트럭이 무게 제한 안에서 올라갈 수 있으면 다리에 넣는다.
+- 모든 대기 트럭이 사라지고 다리 위 트럭도 없으면 종료한다.
+
+## Thinking Process
+
+### First Confusing Point
 
 처음에는 `bridge_length`가 단순히 다리에 동시에 올라갈 수 있는 트럭 수처럼 보였다.
 
@@ -31,7 +54,7 @@
 
 그래서 트럭 한 대가 완전히 지나가는 시점은 `bridge_length + 1`처럼 보인다.
 
-## My First Simulation Idea
+### My First Simulation Idea
 
 처음에는 다리를 위치별 queue로 표현하려고 했다.
 
@@ -51,7 +74,7 @@
 
 이 방식에서는 다리의 각 위치를 따로 두고, 매초 트럭을 한 칸씩 이동시킨다.
 
-## Problem With This Idea
+### Problem With This Idea
 
 위치별 queue 방식은 이해하기는 쉽지만 비효율적이다.
 
@@ -64,7 +87,7 @@
 
 따라서 매초 다리의 모든 칸을 훑는 방식은 타임아웃이 날 수 있다.
 
-## First Attempt - Timeout
+### First Attempt - Timeout
 
 첫 번째 시도는 다리 길이만큼 queue를 만들어서, 매초 트럭을 한 칸씩 옮기는 방식이었다.
 
@@ -93,7 +116,7 @@
 
 하지만 뒤에서 앞으로 고쳐도, 결국 매초 `bridge_length`만큼 확인해야 하는 구조라 시간초과 위험은 남는다.
 
-## Current Realization
+### Current Realization
 
 이 문제의 핵심은 트럭의 현재 위치를 계속 기록하는 것이 아니다.
 
@@ -115,7 +138,7 @@
 
 그러면 매초 다리 전체를 순회할 필요가 없다. queue의 front만 보면 가장 먼저 빠져나갈 트럭이 누구인지 알 수 있다.
 
-## Improved Thinking
+### Improved Thinking
 
 각 시점마다 해야 할 일은 단순해진다.
 
@@ -145,6 +168,17 @@
 
 이렇게 하면 매초 다리의 모든 위치를 움직일 필요가 없고, queue의 front에 있는 트럭이 빠져나갈 시간이 되었는지만 보면 된다.
 
+## Mistakes And Lessons
+
+`queue.front()`를 사용할 때는 반드시 queue가 비어 있지 않은지 먼저 확인해야 한다.
+
+처음 구현에서는 `passing.front()`와 `waiting.front()`를 바로 호출해서 문제가 생겼다. 특히 마지막 트럭이 이미 다리에 올라간 뒤에는 `waiting`이 비어 있어도 `passing`이 남아 있기 때문에 while문은 계속 돈다. 이때 `waiting.front()`를 호출하면 비정상 동작이 발생할 수 있다.
+
+그래서 다음 두 조건을 각각 분리해서 확인해야 한다.
+
+- `passing`이 비어 있지 않을 때만 빠져나갈 트럭을 확인한다.
+- `waiting`이 비어 있지 않을 때만 다음 트럭을 다리에 올릴 수 있는지 확인한다.
+
 ## Key Point
 
 처음에는 다리를 실제 칸처럼 보고, 트럭의 위치를 매초 이동시키려고 했다.
@@ -156,17 +190,6 @@
 - 이전 생각: 트럭의 현재 위치를 기록한다.
 - 깨달은 방향: 트럭이 빠져나갈 시간을 기록한다.
 - 이유: queue의 front만 확인하면 되므로 매초 전체 다리를 순회하지 않아도 된다.
-
-## Implementation Notes
-
-`queue.front()`를 사용할 때는 반드시 queue가 비어 있지 않은지 먼저 확인해야 한다.
-
-처음 구현에서는 `passing.front()`와 `waiting.front()`를 바로 호출해서 문제가 생겼다. 특히 마지막 트럭이 이미 다리에 올라간 뒤에는 `waiting`이 비어 있어도 `passing`이 남아 있기 때문에 while문은 계속 돈다. 이때 `waiting.front()`를 호출하면 비정상 동작이 발생할 수 있다.
-
-그래서 다음 두 조건을 각각 분리해서 확인해야 한다.
-
-- `passing`이 비어 있지 않을 때만 빠져나갈 트럭을 확인한다.
-- `waiting`이 비어 있지 않을 때만 다음 트럭을 다리에 올릴 수 있는지 확인한다.
 
 ## Accepted Solution
 
@@ -242,7 +265,7 @@ int solution(int bridge_length, int weight, vector<int> truck_weights) {
 }
 ```
 
-## Final Notes
+## Notes
 
 - `passing`은 현재 다리 위에 있는 트럭 queue이다.
 - `waiting`은 아직 다리에 올라가지 않은 트럭 queue이다.

@@ -17,6 +17,13 @@
 
 목표는 `location` 위치에 있던 프로세스가 몇 번째로 실행되는지 구하는 것이다.
 
+## Quick Summary
+
+- 실제 대기 순서는 일반 `queue`로 관리한다.
+- 현재 남은 작업 중 가장 높은 우선순위는 `priority_queue`로 확인한다.
+- queue의 앞 프로세스가 현재 최고 우선순위가 아니면 뒤로 보낸다.
+- 실행한 프로세스의 원래 인덱스가 `location`이면 실행 횟수가 정답이다.
+
 ## Constraints
 
 - `priorities`의 길이는 1 이상 100 이하이다.
@@ -24,7 +31,7 @@
 - 숫자가 클수록 우선순위가 높다.
 - `location`은 찾고 싶은 프로세스의 처음 위치이다.
 
-## My Solving Approach
+## My Approach
 
 이 문제는 `queue`와 `priority_queue`를 같이 쓰면 된다.
 
@@ -42,7 +49,7 @@
 
 이렇게 해야 프로세스가 queue 안에서 계속 뒤로 이동해도, 처음 `location`에 있던 프로세스인지 확인할 수 있다.
 
-## Queue Thinking
+## Thinking Process
 
 예시:
 

@@ -21,7 +21,16 @@
 
 만약 모든 음식을 `K` 이상으로 만들 수 없다면 `-1`을 반환한다.
 
-## Heap And Priority Queue
+## Quick Summary
+
+- 매번 가장 작은 스코빌 지수 두 개를 꺼내야 한다.
+- 전체 정렬 상태가 필요한 것이 아니라 현재 최솟값만 빠르게 필요하다.
+- C++에서는 min heap 형태의 `priority_queue`를 사용한다.
+- 가장 작은 값이 이미 `K` 이상이면 모든 음식이 조건을 만족하므로 종료한다.
+
+## Thinking Process
+
+### Heap And Priority Queue
 
 이 문제는 힙 문제지만, C++에서는 보통 `priority_queue`를 사용해서 푼다.
 
@@ -48,7 +57,7 @@ priority_queue<int, vector<int>, greater<int>> pq;
 
 이렇게 만들면 `pq.top()`은 항상 가장 작은 값이 된다.
 
-## Min Heap Syntax
+### Min Heap Syntax
 
 ```cpp
 priority_queue<int, vector<int>, greater<int>> pq;
@@ -69,7 +78,7 @@ less<int>    -> 큰 값이 top -> max heap
 greater<int> -> 작은 값이 top -> min heap
 ```
 
-## Heap Structure
+### Heap Structure
 
 힙은 보통 완전 이진 트리로 이해할 수 있다.
 
@@ -101,7 +110,7 @@ max heap의 규칙:
 
 하지만 부모가 자식보다 작거나 같은 heap 조건은 만족한다. 따라서 보장되는 것은 전체 순서가 아니라 `top()`에 있는 값이다.
 
-## Priority Queue Vs Sorting
+### Priority Queue Vs Sorting
 
 우선순위 큐는 정렬과 다르다.
 
@@ -120,7 +129,7 @@ max heap의 규칙:
 
 그래서 정렬보다 min heap을 사용하는 것이 자연스럽다.
 
-## My Solving Approach
+## My Approach
 
 처음에 모든 스코빌 지수를 min heap에 넣는다.
 
