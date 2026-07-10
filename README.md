@@ -45,6 +45,7 @@ Notes
 
 - [K번째수](programmers/practice/sort/sort_01_kth_number.md)
 - [가장 큰 수](programmers/practice/sort/sort_02_largest_number.md)
+- [H-Index](programmers/practice/sort/sort_03_h_index.md)
 
 ## Study Rules
 
