@@ -47,6 +47,12 @@ Notes
 - [가장 큰 수](programmers/practice/sort/sort_02_largest_number.md)
 - [H-Index](programmers/practice/sort/sort_03_h_index.md)
 
+### Brute Force
+
+- [최소직사각형](programmers/practice/brute_force/brute_force_01_min_rectangle.md)
+- [모의고사](programmers/practice/brute_force/brute_force_02_mock_exam.md)
+- [소수 찾기](programmers/practice/brute_force/brute_force_03_prime_search.md)
+
 ## Study Rules
 
 - 처음 생각한 풀이를 기록한다.
