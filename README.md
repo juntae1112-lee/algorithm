@@ -53,6 +53,7 @@ Notes
 - [모의고사](programmers/practice/brute_force/brute_force_02_mock_exam.md)
 - [소수 찾기](programmers/practice/brute_force/brute_force_03_prime_search.md)
 - [카펫](programmers/practice/brute_force/brute_force_04_carpet.md)
+- [피로도](programmers/practice/brute_force/brute_force_05_fatigue.md)
 
 ## Study Rules
 
